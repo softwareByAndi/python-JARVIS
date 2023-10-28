@@ -6,8 +6,10 @@ import open_ai_wrapper as oa
 import merge_audio as ma
 
 
-timestamp_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+timestamp_str = datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 print(f"Custom formatted timestamp: {timestamp_str}")
+file_path = "../../assets/transcripts"
+base_filename = f"edu_lecture_{timestamp_str}"
 
 transcript_prompt = [
     { "role": "system", "content": "you are a masterful professor of nano electronics and cpu architecture, and you're about to give you're favorite lecture. You're in the middle of your lecture, and you're about to explain the basics of nano electronics and cpu architecture. you say, "},
@@ -16,7 +18,7 @@ transcript_prompt = [
 transcript = oa.chat(transcript_prompt)
 
 
-with open(f"../../assets/transcripts/edu_lecture {timestamp_str} (raw).txt", 'w') as f:
+with open(f"{file_path}/{base_filename}_raw.txt", 'w') as f:
     f.write(transcript)
 print(transcript)
 
@@ -42,7 +44,7 @@ peer_review_prompt = [
     { "role": "user", "content": transcript}
 ]
 peer_review = oa.chat(peer_review_prompt)
-with open(f"../../assets/transcripts/edu_lecture {timestamp_str} (peer reviewed).txt", 'w') as f:
+with open(f"{file_path}/{base_filename}_peer_reviewed.txt", 'w') as f:
     f.write(peer_review)
 print(peer_review)
 
