@@ -5,13 +5,10 @@
 
 # dependencies
 ``` bash
-pip install openai
-pip install elevenlabs
-pip install pydub
-pip install python-dotenv
-
-sudo apt-get install ffmpeg
-sudo apt-get install mpv
+pip install openai elevenlabs pydub python-dotenv pygame mutagen
+```
+``` bash 
+sudo apt-get install ffmpeg mpv
 ```
 
 # convert .txt to .mp3
