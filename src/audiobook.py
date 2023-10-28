@@ -16,7 +16,7 @@ print(f"Custom formatted timestamp: {timestamp_str}")
 
 def audio_producer(text_chunks, filepath, filename):
     audio_files = []
-    temp_path = f"{filepath}/{filename}/temp/{timestamp_str}"
+    temp_path = f"{filepath}{filename}/temp/{timestamp_str}"
     os.makedirs(temp_path, exist_ok=True)
     
     for i, paragraph in enumerate(text_chunks):
@@ -28,7 +28,7 @@ def audio_producer(text_chunks, filepath, filename):
     
     # merge and save audio files now.
     concatenated_audio = ma.merge_audio(audio_files)
-    ma.save(concatenated_audio, f"{filepath}/{filename}.mp3")
+    ma.save(concatenated_audio, f"{filepath}{filename}.mp3")
 
 def audio_consumer():
     while True:
@@ -58,7 +58,9 @@ if (__name__ == "__main__"):
         print("File must be a .txt file.")
         exit(1)
     
-    filepath = f"./{'/'.join(args.file.split('/')[:-1])}"
+    _filepath_parts = args.file.split('/')[:-1]
+    _filepath_string = '/'.join(_filepath_parts)
+    filepath = f"./{_filepath_string}/" # note postfixed /
     filename = args.file.split('/')[-1].replace('.txt', '')
 
     with open(f"{filename}.txt", 'r') as file:
