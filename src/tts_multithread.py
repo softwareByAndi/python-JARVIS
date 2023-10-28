@@ -52,8 +52,8 @@ if (__name__ == "__main__"):
     args = parser.parse_args()
 
     with open(args.infile, 'r') as file:
-        # text_content = file.read()
-        text_content = "\n\n".join(file.read().split('\n\n')[3:6]) # FIXME
+        text_content = file.read()
+        # text_content = "\n\n".join(file.read().split('\n\n')[3:6]) # FIXME
 
 
 
@@ -68,7 +68,6 @@ if (__name__ == "__main__"):
 
     # Wait for the producer thread to finish adding all audio to the queue
     producer_thread.join()
-    
 
     # Wait for all audio to be played
     audio_queue.join()
