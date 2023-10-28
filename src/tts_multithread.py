@@ -66,19 +66,22 @@ if (__name__ == "__main__"):
     with open(f"{filename}.txt", 'r') as file:
         text_content = file.read()
 
+    character_limit = 5000
     # split the text into chunks of 500 characters or less (to lessen delay between input output. api limit is 5k characters)
     paragraphs = text_content.split("\n\n")
     chunks = []
     chunk = ""
     for paragraph in paragraphs:
-        if len(chunk) + len(paragraph) > 500:
+        if len(chunk) + len(paragraph) > character_limit:
             chunks.append(chunk)
             chunk = ""
-        if len(paragraph) > 1000:
+        if len(paragraph) > character_limit:
             for sentence in paragraph.split('.'):
-                if len(chunk) + len(sentence) > 500:
+                if len(chunk) + len(sentence) > character_limit:
                     chunks.append(chunk)
                     chunk = ""
+                if len(sentence) > character_limit:
+                    raise Exception(f"Sentence is too long to be processed by the API. current limit is {character_limit} characters.")
                 chunk += sentence + "."
         else:
             chunk += paragraph + "\n\n"
