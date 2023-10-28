@@ -53,7 +53,6 @@ if (__name__ == "__main__"):
 
     with open(args.infile, 'r') as file:
         text_content = file.read()
-        # text_content = "\n\n".join(file.read().split('\n\n')[3:6]) # FIXME
 
 
 
