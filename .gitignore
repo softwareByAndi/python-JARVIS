@@ -1,6 +1,5 @@
 # temp files
 *temp*
-audiobook_files/**/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
