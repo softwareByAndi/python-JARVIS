@@ -14,20 +14,21 @@ audio_queue = queue.Queue()
 timestamp_str = datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 print(f"Custom formatted timestamp: {timestamp_str}")
 
-def audio_producer(text_chunks, filename):
+def audio_producer(text_chunks, filepath, filename):
     audio_files = []
-    temp_path = f"./audiobook_temps/{filename}/{timestamp_str}"
+    temp_path = f"{filepath}/{filename}/temp/{timestamp_str}"
     os.makedirs(temp_path, exist_ok=True)
     
     for i, paragraph in enumerate(text_chunks):
         audio = el.text_to_speech(paragraph)
         audio_queue.put(audio)
         audio_files.append(audio)
+        # save chunks in case of critical error before files can be merged
         ma.export_to_mp3(audio, f"{temp_path}/{i}.mp3")
     
     # merge and save audio files now.
     concatenated_audio = ma.merge_audio(audio_files)
-    ma.save(concatenated_audio, f"./audiobook_temps/{filename}.mp3")
+    ma.save(concatenated_audio, f"{filepath}/{filename}.mp3")
 
 def audio_consumer():
     while True:
@@ -46,11 +47,21 @@ def audio_consumer():
 
 if (__name__ == "__main__"):
     parser = argparse.ArgumentParser(description="Process a filename.")
-    parser.add_argument("filename", type=str, help="The name of the file to process")
+    parser.add_argument("file", type=str, help="The name of the file to process")
 
     args = parser.parse_args()
+    
+    if (args.file == None):
+        print("No filename provided.")
+        exit(1)
+    if (args.file.split('.')[-1] != 'txt'):
+        print("File must be a .txt file.")
+        exit(1)
+    
+    filepath = f"./{'/'.join(args.file.split('/')[:-1])}"
+    filename = args.file.split('/')[-1].replace('.txt', '')
 
-    with open(f"{args.filename}.txt", 'r') as file:
+    with open(f"{filename}.txt", 'r') as file:
         text_content = file.read()
 
     # split the text into chunks of 500 characters or less (to lessen delay between input output. api limit is 5k characters)
@@ -73,7 +84,7 @@ if (__name__ == "__main__"):
         chunks.append(chunk)
 
     # Start the producer thread
-    producer_thread = threading.Thread(target=audio_producer, args=(chunks, args.filename,))
+    producer_thread = threading.Thread(target=audio_producer, args=(chunks, filepath, filename,))
     producer_thread.start()
 
     # Start the consumer thread
@@ -82,7 +93,6 @@ if (__name__ == "__main__"):
 
     # Wait for the producer thread to finish adding all audio to the queue
     producer_thread.join()
-    
 
     # Wait for all audio to be played
     audio_queue.join()
