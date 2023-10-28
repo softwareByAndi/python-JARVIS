@@ -14,7 +14,7 @@ sudo apt-get install ffmpeg
 sudo apt-get install mpv
 ```
 
-## convert .txt to .mp3
+# convert .txt to .mp3
 ``` bash
 python tts.py infile.txt outfile_name # .mp3 will be appended automatically
 ```
