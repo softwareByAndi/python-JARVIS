@@ -63,11 +63,11 @@ if (__name__ == "__main__"):
     filepath = f"./{_filepath_string}/" # note postfixed /
     filename = args.file.split('/')[-1].replace('.txt', '')
 
-    with open(f"{filename}.txt", 'r') as file:
+    with open(f"{filepath}{filename}.txt", 'r') as file:
         text_content = file.read()
 
+    # split the text into chunks (api limit is 5k characters)
     character_limit = 5000
-    # split the text into chunks of 500 characters or less (to lessen delay between input output. api limit is 5k characters)
     paragraphs = text_content.split("\n\n")
     chunks = []
     chunk = ""
