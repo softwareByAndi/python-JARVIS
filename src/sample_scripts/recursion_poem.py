@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../lib')
+sys.path.append('../../lib')
 import merge_audio as ma
 import eleven_labs_wrapper as el
 import open_ai_wrapper as oa
