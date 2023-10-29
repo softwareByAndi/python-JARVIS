@@ -1,7 +1,16 @@
+# TODO:
+- [ ] refactor audio control functions into their own module.
+- [ ] speech to text --> GPT --> custom logic --> GPT --> text to speech
+- [ ] enable selection of other TTS APIs. 
+  - perhaps Amazon Poly? it's 75x cheaper than eleven-labs, so good for testing.
+  - playHT might be good too... 30% cheaper, and quality is okay.
+
+
 # documentation: 
 
 [elevenlabs-python github](https://github.com/elevenlabs/elevenlabs-python)
 [openai documentation quickstart](https://platform.openai.com/docs/quickstart?context=python)
+
 
 # dependencies
 ``` bash
